@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault — Secure Password Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-card">
+                <div class="logo">
+                    <div class="logo-icon">🔐</div>
+                    <span class="logo-text">Vault</span>
+                </div>
+                
+                <h1 class="login-title" id="authTitle">Welcome back</h1>
+                <p class="login-subtitle" id="authSubtitle">Enter your credentials to access your vault</p>
+
+                <form id="authForm">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="authUsername" placeholder="Enter username" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Master Password</label>
+                        <div class="password-field">
+                            <input type="password" class="form-input" id="authPassword" placeholder="Enter master password" required autocomplete="current-password" style="padding-right: 48px;">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('authPassword', this)">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="authBtn">
+                        <span>🔓</span>
+                        <span id="authBtnText">Unlock Vault</span>
+                    </button>
+                </form>
+
+                <div class="toggle-auth">
+                    <span id="toggleText">Don't have an account?</span>
+                    <a onclick="toggleAuthMode()" id="toggleLink">Create one</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="dashboard">
+            <header class="header">
+                <div class="header-content">
+                    <div class="header-logo">
+                        <div class="header-logo-icon">🔐</div>
+                        <span class="header-logo-text">Vault</span>
+                    </div>
+                    <div class="header-actions">
+                        <div class="user-badge">
+                            <div class="user-avatar" id="userAvatar">U</div>
+                            <span id="displayUsername">User</span>
+                        </div>
+                        <button class="btn btn-secondary btn-icon" onclick="logout()" title="Logout">
+                            🚪
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="dashboard-header">
+                    <div>
+                        <h1 class="dashboard-title">Your Credentials</h1>
+                        <p class="dashboard-subtitle">Securely stored and encrypted</p>
+                    </div>
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search credentials..." id="searchInput" oninput="filterCredentials()">
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green">🔑</div>
+                        <div class="stat-value" id="totalCredentials">0</div>
+                        <div class="stat-label">Total Credentials</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">🛡️</div>
+                        <div class="stat-value" id="strongPasswords">0</div>
+                        <div class="stat-label">Strong Passwords</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">⚠️</div>
+                        <div class="stat-value" id="weakPasswords">0</div>
+                        <div class="stat-label">Weak Passwords</div>
+                    </div>
+                </div>
+
+                <div class="credentials-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Saved Passwords</h2>
+                        <button class="btn btn-primary" onclick="openAddModal()">
+                            <span>➕</span>
+                            <span>Add New</span>
+                        </button>
+                    </div>
+                    <div class="credentials-list" id="credentialsList">
+                        <!-- Credentials will be rendered here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal-overlay" id="credentialModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add Credential</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="credentialForm">
+                    <input type="hidden" id="credentialId">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Website / Service</label>
+                        <input type="text" class="form-input" id="credSite" placeholder="e.g., Google, Netflix" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Username / Email</label>
+                        <input type="text" class="form-input" id="credUsername" placeholder="Enter username or email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-field">
+                            <input type="password" class="form-input" id="credPassword" placeholder="Enter password" required style="padding-right: 48px;" oninput="updateStrengthIndicator()">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('credPassword', this)">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" onclick="generatePassword()" style="width: 100%;">
+                            <span>🎲</span>
+                            <span>Generate Strong Password</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveCredential()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
