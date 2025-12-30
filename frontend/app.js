@@ -3,7 +3,21 @@
  * PASSWORD VAULT - MAIN APPLICATION
  * ============================================
  * Handles UI interactions and application state
+ * 
+ * ⚠️ WARNING: This is a university assignment project
+ * with intentional security vulnerabilities.
+ * DO NOT use for storing real passwords!
  */
+
+// Security warning in console
+console.warn(
+    '%c⚠️ SECURITY WARNING',
+    'color: red; font-size: 20px; font-weight: bold;'
+);
+console.warn(
+    '%cThis site is created for a university assignment and contains intentional security vulnerabilities.\nDo NOT use it as your actual password manager!',
+    'color: orange; font-size: 14px;'
+);
 
 // ============================================
 // STATE

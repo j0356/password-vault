@@ -34,6 +34,32 @@ body {
 }
 
 /* ============================================
+   WARNING BANNER
+   ============================================ */
+.warning-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #ff4757, #ff6b81);
+    color: white;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.warning-banner strong {
+    font-weight: 700;
+}
+
+/* Adjust body to account for warning banner */
+body {
+    padding-top: 50px;
+}
+
+/* ============================================
    BACKGROUND EFFECTS
    ============================================ */
 .bg-pattern {
@@ -385,6 +411,21 @@ body {
 .dashboard-subtitle {
     color: var(--text-secondary);
     margin-top: 0.25rem;
+}
+
+.dashboard-warning {
+    background: rgba(255, 71, 87, 0.15);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-left: 4px solid var(--danger);
+    color: #ff6b81;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.dashboard-warning strong {
+    color: var(--danger);
 }
 
 .search-bar {

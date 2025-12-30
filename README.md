@@ -1,5 +1,15 @@
 # Password Vault
 
+> ⚠️ **SECURITY WARNING**
+> 
+> This project is created for a **university assignment** and contains **intentional security vulnerabilities** for educational purposes. 
+> 
+> **DO NOT use this as your actual password manager!**
+> 
+> This application is designed to demonstrate common security flaws and should only be used in a controlled, educational environment. Never store real passwords or sensitive information in this system.
+
+---
+
 A secure password manager with a modern UI and encrypted credential storage.
 
 ## Quick Start with Docker 🐳
@@ -9,8 +19,8 @@ A secure password manager with a modern UI and encrypted credential storage.
 cd password-vault
 
 # Copy environment file and edit secrets
-cp .env.example .env
-nano .env  # Change all default passwords!
+cp backend/.env.example backend/.env
+nano backend/.env  # Change all default passwords!
 
 # Start all services
 docker-compose up -d
@@ -211,6 +221,26 @@ const API_BASE_URL = 'http://localhost:4000/api';
 ## License
 
 MIT
+
+---
+
+## ⚠️ Disclaimer
+
+This project is developed as part of a **university assignment** to demonstrate web application security concepts. The application contains **intentional security vulnerabilities** for educational purposes.
+
+**DO NOT:**
+- Use this as a real password manager
+- Store actual passwords or sensitive information
+- Deploy this to production without understanding the risks
+- Rely on this for any security-critical purpose
+
+**This project is intended for:**
+- Learning about web security vulnerabilities
+- Understanding common attack vectors
+- Practicing security testing and penetration testing
+- Educational demonstrations only
+
+The authors are not responsible for any misuse or damage caused by this application.
 
 ---
 
