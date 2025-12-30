@@ -45,18 +45,13 @@ services:
     restart: unless-stopped
     ports:
       - "4000:4000"
+    env_file:
+      - ./backend/.env
     environment:
       - NODE_ENV=production
       - PORT=4000
       - DB_HOST=database
       - DB_PORT=3306
-      - DB_USER=${DB_USER:-vault_user}
-      - DB_PASSWORD=${DB_PASSWORD:-vault_secure_password}
-      - DB_NAME=${DB_NAME:-password_vault}
-      - JWT_SECRET=${JWT_SECRET:-change-this-super-secret-jwt-key-in-production}
-      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-24h}
-      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-change-this-32-char-encryption-key!}
-      - FRONTEND_URL=http://localhost:3000
     depends_on:
       database:
         condition: service_healthy
@@ -78,18 +73,20 @@ services:
     restart: unless-stopped
     ports:
       - "3306:3306"
+    env_file:
+      - ./backend/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_password_change_me}
-      - MYSQL_DATABASE=${DB_NAME:-password_vault}
-      - MYSQL_USER=${DB_USER:-vault_user}
-      - MYSQL_PASSWORD=${DB_PASSWORD:-vault_secure_password}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - vault-db-data:/var/lib/mysql
       - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     networks:
       - vault-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root_password_change_me}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
