@@ -5,7 +5,8 @@
  * Handles all communication with the backend API
  */
 
-const API_BASE_URL = 'http://localhost:4000/api';
+// Always use relative URL - Nginx proxies /api to backend
+const API_BASE_URL = '/api';
 
 // Store auth token
 let authToken = localStorage.getItem('vault_token') || null;
